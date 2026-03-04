@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MAISON ELARA — Luxury Boutique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--ivory:#faf7f2;--warm:#f0ebe1;--dark:#1a1614;--brown:#8b6f47;--gold:#c9a96e;--muted:#9a8e80;--border:rgba(26,22,20,0.1);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Jost',sans-serif;background:var(--ivory);color:var(--dark);overflow-x:hidden;}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.4rem 5%;background:rgba(250,247,242,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+    .logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;letter-spacing:0.12em;}
+    .logo span{color:var(--gold);}
+    .nav-links{display:flex;gap:2.5rem;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--dark);}
+    .nav-right{display:flex;align-items:center;gap:1.5rem;}
+    .nav-icon{font-size:1.1rem;cursor:pointer;color:var(--dark);opacity:0.7;transition:opacity 0.2s;}
+    .nav-icon:hover{opacity:1;}
+    .nav-bag{position:relative;}
+    .bag-count{position:absolute;top:-6px;right:-8px;width:16px;height:16px;background:var(--gold);color:#fff;border-radius:50%;font-size:0.6rem;display:flex;align-items:center;justify-content:center;font-weight:600;}
+
+    .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:74px;}
+    .hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 5rem 5%;background:var(--warm);position:relative;overflow:hidden;}
+    .hero-left::before{content:'';position:absolute;bottom:-10%;left:-10%;width:300px;height:300px;border-radius:50%;border:1px solid var(--border);}
+    .hero-left::after{content:'';position:absolute;bottom:-5%;left:-5%;width:200px;height:200px;border-radius:50%;border:1px solid rgba(201,169,110,0.3);}
+    .season-tag{font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;animation:fadeLeft 0.6s ease both;}
+    h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5vw,5.5rem);font-weight:300;line-height:1.05;letter-spacing:0.02em;margin-bottom:1.8rem;animation:fadeLeft 0.6s 0.1s ease both;}
+    h1 em{font-style:italic;color:var(--brown);}
+    .hero-desc{font-size:0.92rem;color:var(--muted);line-height:1.85;max-width:380px;margin-bottom:2.5rem;animation:fadeLeft 0.6s 0.2s ease both;}
+    .hero-btns{display:flex;gap:1rem;animation:fadeLeft 0.6s 0.3s ease both;}
+    .btn-dark{background:var(--dark);color:var(--ivory);padding:0.9rem 2rem;font-size:0.78rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;transition:background 0.2s;}
+    .btn-dark:hover{background:var(--brown);}
+    .btn-border{background:transparent;color:var(--dark);padding:0.9rem 2rem;font-size:0.78rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border:1px solid var(--border);transition:border-color 0.2s;}
+    .btn-border:hover{border-color:var(--gold);color:var(--gold);}
+    .hero-right{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#e8e0d0;min-height:600px;}
+    .hero-img-placeholder{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;width:100%;height:100%;font-size:6rem;}
+    .hero-badge{position:absolute;bottom:2rem;left:2rem;background:var(--ivory);padding:1.2rem 1.5rem;box-shadow:0 8px 40px rgba(0,0,0,0.1);}
+    .badge-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;margin-bottom:0.2rem;}
+    .badge-sub{font-size:0.72rem;color:var(--muted);letter-spacing:0.08em;}
+    @keyframes fadeLeft{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:translateX(0)}}
+
+    .strip{background:var(--dark);color:var(--ivory);text-align:center;padding:0.9rem;font-size:0.78rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;}
+    .strip span{color:var(--gold);}
+
+    section{padding:6rem 5%;}
+    .sec-eyebrow{font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;}
+    .sec-heading{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.15;margin-bottom:1rem;}
+    .sec-heading em{font-style:italic;}
+    .sec-sub{font-size:0.9rem;color:var(--muted);line-height:1.8;max-width:460px;margin-bottom:3rem;}
+
+    #categories{background:var(--warm);}
+    .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+    .cat-card{position:relative;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:all 0.3s;}
+    .cat-card:hover{border-color:var(--gold);}
+    .cat-card:hover .cat-img{transform:scale(1.04);}
+    .cat-img{height:320px;display:flex;align-items:center;justify-content:center;font-size:4rem;transition:transform 0.5s ease;}
+    .cat-info{padding:1.2rem 1.4rem;}
+    .cat-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;margin-bottom:0.3rem;}
+    .cat-count{font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;}
+
+    #featured{}
+    .featured-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem;}
+    .view-all{font-size:0.78rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:2px;transition:color 0.2s;}
+    .view-all:hover{color:var(--gold);border-color:var(--gold);}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2rem;}
+    .prod-card{cursor:pointer;}
+    .prod-img{height:340px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden;margin-bottom:1.2rem;transition:all 0.3s;border:1px solid var(--border);}
+    .prod-card:hover .prod-img{border-color:var(--gold);}
+    .prod-wish{position:absolute;top:1rem;right:1rem;font-size:1.1rem;opacity:0;transition:opacity 0.2s;}
+    .prod-card:hover .prod-wish{opacity:1;}
+    .prod-tag{position:absolute;top:1rem;left:1rem;background:var(--dark);color:var(--ivory);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.6rem;}
+    .prod-tag.sale{background:var(--gold);}
+    .prod-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:0.3rem;}
+    .prod-price{font-size:0.88rem;color:var(--muted);}
+    .prod-price .orig{text-decoration:line-through;margin-right:0.5rem;}
+    .prod-price .sale-p{color:var(--brown);}
+
+    #editorial{background:var(--dark);color:var(--ivory);}
+    .editorial-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+    .ed-label{font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+    .ed-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:300;line-height:1.1;margin-bottom:1.5rem;}
+    .ed-title em{font-style:italic;}
+    .ed-desc{font-size:0.9rem;color:rgba(250,247,242,0.55);line-height:1.85;margin-bottom:2.5rem;}
+    .ed-link{font-size:0.78rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,169,110,0.4);padding-bottom:4px;transition:border-color 0.2s;}
+    .ed-link:hover{border-color:var(--gold);}
+    .ed-visual{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .ed-img{display:flex;align-items:center;justify-content:center;font-size:3.5rem;border:1px solid rgba(255,255,255,0.08);}
+    .ed-img:first-child{height:280px;}
+    .ed-img:last-child{height:200px;align-self:flex-end;}
+
+    #trust{padding:4rem 5%;text-align:center;background:var(--warm);}
+    .trust-items{display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;margin-top:2.5rem;}
+    .trust-item{display:flex;flex-direction:column;align-items:center;gap:0.5rem;}
+    .trust-icon{font-size:1.6rem;}
+    .trust-label{font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+
+    /* AI TOOLS */
+    #ai-tools{background:var(--dark);color:var(--ivory);}
+    .ai-tabs{display:flex;justify-content:center;gap:0.5rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+    .ai-tab{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(250,247,242,0.55);padding:0.65rem 1.4rem;border-radius:100px;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Jost',sans-serif;letter-spacing:0.04em;}
+    .ai-tab.active,.ai-tab:hover{background:var(--gold);color:var(--dark);border-color:var(--gold);}
+    .ai-panel{max-width:760px;margin:0 auto;display:none;}
+    .ai-panel.active{display:block;}
+    .ai-card{background:#252018;border:1px solid rgba(201,169,110,0.2);border-radius:16px;padding:2rem;}
+    .ai-chat-header{display:flex;align-items:center;gap:0.6rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:1rem;}
+    .ai-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse2 2s infinite;}
+    @keyframes pulse2{0%,100%{opacity:1}50%{opacity:0.4}}
+    .ai-messages{min-height:180px;max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:0.8rem;margin-bottom:1rem;}
+    .msg{padding:0.75rem 1rem;border-radius:12px;font-size:0.88rem;line-height:1.6;max-width:85%;}
+    .msg.bot{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.2);color:var(--ivory);align-self:flex-start;}
+    .msg.user{background:var(--gold);color:var(--dark);align-self:flex-end;font-weight:500;}
+    .ai-input-row{display:flex;gap:0.6rem;}
+    .ai-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--ivory);padding:0.75rem 1rem;border-radius:8px;font-size:0.88rem;font-family:'Jost',sans-serif;outline:none;transition:border-color 0.2s;}
+    .ai-input:focus{border-color:var(--gold);}
+    .ai-input option{background:#252018;color:var(--ivory);}
+    .ai-send{background:var(--gold);color:var(--dark);border:none;padding:0.75rem 1.4rem;border-radius:8px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Jost',sans-serif;transition:background 0.2s;}
+    .ai-send:hover{background:#d4b47a;}
+    .ai-label{display:block;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(250,247,242,0.4);margin-bottom:0.5rem;}
+    .ai-gen-btn{width:100%;background:var(--gold);color:var(--dark);border:none;padding:0.9rem;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;letter-spacing:0.05em;font-family:'Jost',sans-serif;transition:all 0.2s;}
+    .ai-gen-btn:hover{background:#d4b47a;transform:translateY(-1px);}
+    .ai-gen-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+    .ai-output{margin-top:1.2rem;background:rgba(255,255,255,0.04);border:1px solid rgba(201,169,110,0.2);border-radius:10px;padding:1.2rem;font-size:0.88rem;line-height:1.8;color:var(--ivory);white-space:pre-wrap;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+
+    footer{background:var(--dark);color:var(--ivory);padding:4rem 5% 2rem;}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+    .footer-brand p{font-size:0.85rem;color:rgba(250,247,242,0.45);line-height:1.8;margin-top:1rem;max-width:260px;}
+    .footer-col h4{font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:0.6rem;}
+    .footer-col ul a{font-size:0.85rem;color:rgba(250,247,242,0.5);text-decoration:none;transition:color 0.2s;}
+    .footer-col ul a:hover{color:var(--ivory);}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+    .footer-bottom p{font-size:0.78rem;color:rgba(250,247,242,0.35);}
+
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:900px){.hero{grid-template-columns:1fr;}.hero-right{display:none;}.cat-grid{grid-template-columns:1fr 1fr;}.editorial-grid{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}}
+    @media(max-width:600px){.nav-links{display:none;}.cat-grid{grid-template-columns:1fr;}.form-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Maison <span>Elara</span></div>
+  <ul class="nav-links">
+    <li><a href="#categories">Collections</a></li>
+    <li><a href="#featured">New In</a></li>
+    <li><a href="#editorial">Editorial</a></li>
+    <li><a href="#ai-tools">AI Tools</a></li>
+  </ul>
+  <div class="nav-right">
+    <span class="nav-icon">🔍</span>
+    <span class="nav-icon">♡</span>
+    <span class="nav-icon nav-bag">🛍️<span class="bag-count">2</span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="season-tag">✦ New Arrivals — Summer 2026</div>
+    <h1>Crafted for<br/>the <em>Modern</em><br/>Woman</h1>
+    <p class="hero-desc">Timeless silhouettes. Sustainable fabrics. Designed in Mumbai, worn everywhere. Discover our summer edit.</p>
+    <div class="hero-btns">
+      <a href="#featured" class="btn-dark">Shop Collection</a>
+      <a href="#editorial" class="btn-border">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-placeholder" style="background:linear-gradient(160deg,#e8e0d0,#d4c8b4);">👗</div>
+    <div class="hero-badge">
+      <div class="badge-title">New Season Edit</div>
+      <div class="badge-sub">120+ New Styles Available</div>
+    </div>
+  </div>
+</div>
+
+<div class="strip">Free shipping on orders above ₹2,000 · <span>Use code ELARA10</span> for 10% off first order</div>
+
+<!-- CATEGORIES -->
+<section id="categories">
+  <p class="sec-eyebrow reveal">Shop By</p>
+  <h2 class="sec-heading reveal">Our <em>Collections</em></h2>
+  <div class="cat-grid">
+    <div class="cat-card reveal">
+      <div class="cat-img" style="background:linear-gradient(160deg,#e8e0d0,#d4c0a0);">👗</div>
+      <div class="cat-info"><div class="cat-name">Dresses & Kurtas</div><div class="cat-count">84 Styles</div></div>
+    </div>
+    <div class="cat-card reveal">
+      <div class="cat-img" style="background:linear-gradient(160deg,#dde0e8,#c0c4d4);">🧥</div>
+      <div class="cat-info"><div class="cat-name">Co-ord Sets</div><div class="cat-count">52 Styles</div></div>
+    </div>
+    <div class="cat-card reveal">
+      <div class="cat-img" style="background:linear-gradient(160deg,#e8dde0,#d4b4b8);">👜</div>
+      <div class="cat-info"><div class="cat-name">Accessories</div><div class="cat-count">36 Styles</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section id="featured">
+  <div class="featured-header reveal">
+    <div><p class="sec-eyebrow">Just Arrived</p><h2 class="sec-heading">New <em>This Week</em></h2></div>
+    <a href="#" class="view-all">View All →</a>
+  </div>
+  <div class="products-grid">
+    <div class="prod-card reveal">
+      <div class="prod-img" style="background:linear-gradient(160deg,#ede5d8,#d9cbb8);">👗<span class="prod-wish">♡</span><span class="prod-tag">New</span></div>
+      <div class="prod-name">Ivory Linen Maxi Dress</div><div class="prod-price">₹3,499</div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-img" style="background:linear-gradient(160deg,#dce8e0,#b8d4c0);">👘<span class="prod-wish">♡</span><span class="prod-tag sale">Sale</span></div>
+      <div class="prod-name">Sage Green Co-ord Set</div><div class="prod-price"><span class="orig">₹4,200</span><span class="sale-p">₹2,990</span></div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-img" style="background:linear-gradient(160deg,#e8dce8,#d4b8d4);">🥻<span class="prod-wish">♡</span><span class="prod-tag">New</span></div>
+      <div class="prod-name">Lavender Wrap Kurta</div><div class="prod-price">₹2,799</div>
+    </div>
+    <div class="prod-card reveal">
+      <div class="prod-img" style="background:linear-gradient(160deg,#e8e0d4,#d4c4a8);">👜<span class="prod-wish">♡</span></div>
+      <div class="prod-name">Camel Structured Tote</div><div class="prod-price">₹1,899</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDITORIAL -->
+<section id="editorial">
+  <div class="editorial-grid">
+    <div>
+      <div class="ed-label">The Elara Edit</div>
+      <h2 class="ed-title">Dressing for <em>Every</em> Chapter</h2>
+      <p class="ed-desc">From morning chai to evening dinners — our summer collection moves with you. Effortless, intentional, and always comfortable.</p>
+      <a href="#" class="ed-link">Read the Story →</a>
+    </div>
+    <div class="ed-visual">
+      <div class="ed-img" style="background:linear-gradient(160deg,#2a2018,#1a1410);">🌸</div>
+      <div class="ed-img" style="background:linear-gradient(160deg,#182018,#101810);">🌿</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section id="trust">
+  <p class="sec-eyebrow">Why Choose Us</p>
+  <h2 class="sec-heading" style="margin-bottom:0;">Made with <em>Intention</em></h2>
+  <div class="trust-items">
+    <div class="trust-item reveal"><span class="trust-icon">🌿</span><div class="trust-label">Sustainable Fabrics</div></div>
+    <div class="trust-item reveal"><span class="trust-icon">🇮🇳</span><div class="trust-label">Made in India</div></div>
+    <div class="trust-item reveal"><span class="trust-icon">🔄</span><div class="trust-label">Easy Returns</div></div>
+    <div class="trust-item reveal"><span class="trust-icon">🚚</span><div class="trust-label">Free Shipping ₹2K+</div></div>
+    <div class="trust-item reveal"><span class="trust-icon">💬</span><div class="trust-label">Styling Assistance</div></div>
+  </div>
+</section>
+
+<!-- AI TOOLS -->
+<section id="ai-tools">
+  <div style="text-align:center;margin-bottom:3rem;">
+    <p class="sec-eyebrow reveal">Powered by AI</p>
+    <h2 class="sec-heading reveal" style="color:var(--ivory);">Smart Tools for <em>Modern</em> Fashion</h2>
+    <p style="color:rgba(250,247,242,0.45);font-size:0.9rem;max-width:480px;margin:0.8rem auto 0;line-height:1.8;">AI tools to find the perfect outfit, create social content, and grow your brand — all in one place.</p>
+  </div>
+
+  <div class="ai-tabs">
+    <button class="ai-tab active" onclick="switchTab('stylist')">✨ AI Style Assistant</button>
+    <button class="ai-tab" onclick="switchTab('caption')">📱 Caption Generator</button>
+    <button class="ai-tab" onclick="switchTab('campaign')">🚀 Campaign Builder</button>
+  </div>
+
+  <!-- STYLIST PANEL -->
+  <div id="panel-stylist" class="ai-panel active">
+    <div class="ai-card">
+      <div class="ai-chat-header">
+        <span class="ai-dot"></span>
+        <span style="font-size:0.85rem;font-weight:600;">Elara Style Assistant</span>
+        <span style="font-size:0.75rem;color:var(--gold);margin-left:auto;">● Online</span>
+      </div>
+      <div class="ai-messages" id="chat-messages">
+        <div class="msg bot">👋 Hi! I'm your personal style assistant. Tell me your occasion, body type, or style preference and I'll recommend the perfect outfit from our collection!</div>
+      </div>
+      <div class="ai-input-row">
+        <input type="text" id="chat-input" class="ai-input" placeholder="e.g. I need an outfit for a friend's wedding..." onkeydown="if(event.key==='Enter')sendChat()"/>
+        <button class="ai-send" onclick="sendChat()">Send →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPTION PANEL -->
+  <div id="panel-caption" class="ai-panel">
+    <div class="ai-card">
+      <p style="font-size:0.82rem;color:rgba(250,247,242,0.5);margin-bottom:1.4rem;">Generate scroll-stopping Instagram & WhatsApp captions for your products instantly.</p>
+      <div class="form-row">
+        <div><label class="ai-label">Product Name</label><input type="text" id="cap-product" class="ai-input" placeholder="e.g. Ivory Linen Maxi Dress" value="Ivory Linen Maxi Dress"/></div>
+        <div><label class="ai-label">Platform</label><select id="cap-platform" class="ai-input"><option>Instagram</option><option>WhatsApp Status</option><option>Facebook Post</option></select></div>
+      </div>
+      <div class="form-row" style="margin-bottom:1.5rem;">
+        <div><label class="ai-label">Vibe</label><select id="cap-vibe" class="ai-input"><option>Elegant & Luxurious</option><option>Fun & Playful</option><option>Sale / Urgency</option><option>Festive / Celebratory</option></select></div>
+        <div><label class="ai-label">Price (optional)</label><input type="text" id="cap-price" class="ai-input" placeholder="e.g. ₹3,499"/></div>
+      </div>
+      <button class="ai-gen-btn" onclick="generateCaption()">✨ Generate Caption</button>
+      <div id="caption-output" class="ai-output" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- CAMPAIGN PANEL -->
+  <div id="panel-campaign" class="ai-panel">
+    <div class="ai-card">
+      <p style="font-size:0.82rem;color:rgba(250,247,242,0.5);margin-bottom:1.4rem;">Build a full social media campaign plan for Instagram, WhatsApp & Facebook in seconds.</p>
+      <div class="form-row">
+        <div><label class="ai-label">Campaign Goal</label><select id="camp-goal" class="ai-input"><option>New Collection Launch</option><option>End of Season Sale</option><option>Festival Special</option><option>Brand Awareness</option></select></div>
+        <div><label class="ai-label">Duration</label><select id="camp-dur" class="ai-input"><option>1 Week</option><option>2 Weeks</option><option>1 Month</option></select></div>
+      </div>
+      <div style="margin-bottom:1.5rem;"><label class="ai-label">Target Audience</label><input type="text" id="camp-audience" class="ai-input" placeholder="e.g. Women 22-40, Mumbai, fashion-conscious" value="Women 22-40, Mumbai, fashion-conscious"/></div>
+      <button class="ai-gen-btn" onclick="generateCampaign()">🚀 Build Campaign Plan</button>
+      <div id="campaign-output" class="ai-output" style="display:none;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo">Maison <span>Elara</span></div>
+      <p>Contemporary Indian fashion for the modern woman. Crafted with care in Mumbai.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul><li><a href="#">New Arrivals</a></li><li><a href="#">Dresses</a></li><li><a href="#">Co-ords</a></li><li><a href="#">Accessories</a></li><li><a href="#">Sale</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <ul><li><a href="#">Size Guide</a></li><li><a href="#">Shipping</a></li><li><a href="#">Returns</a></li><li><a href="#">Track Order</a></li><li><a href="#">Contact Us</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul><li><a href="#">Instagram</a></li><li><a href="#">Pinterest</a></li><li><a href="#">WhatsApp</a></li><li><a href="#">Newsletter</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Maison Elara. All rights reserved.</p>
+    <p>Mumbai, Maharashtra · hello@maisonelara.in</p>
+  </div>
+</footer>
+
+<script>
+// TABS
+function switchTab(tab) {
+  document.querySelectorAll('.ai-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ai-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// CHAT
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  const box = document.getElementById('chat-messages');
+  box.innerHTML += `<div class="msg user">${msg}</div>`;
+  box.innerHTML += `<div class="msg bot" id="typing">Thinking...</div>`;
+  input.value = '';
+  box.scrollTop = box.scrollHeight;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 1000,
+        system: `You are Elara, a warm and stylish fashion assistant for Maison Elara, a Mumbai-based luxury boutique. Our collection: Ivory Linen Maxi Dress (₹3,499), Sage Green Co-ord Set (₹2,990), Lavender Wrap Kurta (₹2,799), Camel Structured Tote (₹1,899). Recommend outfits based on occasion, preference, or body type. Be friendly, concise and fashion-forward.`,
+        messages: [{ role: 'user', content: msg }]
+      })
+    });
+    const data = await res.json();
+    document.getElementById('typing').remove();
+    const reply = data.content?.[0]?.text || "Could you tell me more about the occasion you have in mind?";
+    box.innerHTML += `<div class="msg bot">${reply}</div>`;
+  } catch(e) {
+    document.getElementById('typing').remove();
+    box.innerHTML += `<div class="msg bot">Sorry, I'm having trouble connecting. Please try again!</div>`;
+  }
+  box.scrollTop = box.scrollHeight;
+}
+
+// CAPTION
+async function generateCaption() {
+  const product = document.getElementById('cap-product').value;
+  const platform = document.getElementById('cap-platform').value;
+  const vibe = document.getElementById('cap-vibe').value;
+  const price = document.getElementById('cap-price').value;
+  const btn = document.querySelector('#panel-caption .ai-gen-btn');
+  const out = document.getElementById('caption-output');
+  btn.disabled = true; btn.textContent = '✨ Generating...';
+  out.style.display = 'block'; out.textContent = 'Writing your caption...';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 1000,
+        system: `You are a social media expert for Maison Elara, a luxury Indian women's fashion boutique in Mumbai. Write compelling ${platform} captions that drive engagement and sales. Include relevant emojis, hashtags, and a call to action. Keep it authentic to Indian fashion culture.`,
+        messages: [{ role: 'user', content: `Write a ${vibe} ${platform} caption for: ${product}${price ? ` priced at ${price}` : ''}. Include hashtags.` }]
+      })
+    });
+    const data = await res.json();
+    out.textContent = data.content?.[0]?.text || 'Could not generate caption. Try again.';
+  } catch(e) { out.textContent = 'Connection error. Please try again.'; }
+  btn.disabled = false; btn.textContent = '✨ Generate Caption';
+}
+
+// CAMPAIGN
+async function generateCampaign() {
+  const goal = document.getElementById('camp-goal').value;
+  const dur = document.getElementById('camp-dur').value;
+  const audience = document.getElementById('camp-audience').value;
+  const btn = document.querySelector('#panel-campaign .ai-gen-btn');
+  const out = document.getElementById('campaign-output');
+  btn.disabled = true; btn.textContent = '🚀 Building...';
+  out.style.display = 'block'; out.textContent = 'Creating your campaign plan...';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 1000,
+        system: `You are a digital marketing strategist for Maison Elara, a luxury women's boutique in Mumbai. Create practical, actionable social media campaign plans for Instagram, WhatsApp, and Facebook. Be specific about post types, timing, and content ideas suited for Indian audiences.`,
+        messages: [{ role: 'user', content: `Create a ${dur} social media campaign for: ${goal}. Target: ${audience}. Include day-by-day posting schedule, content ideas, caption styles, hashtag strategy, and WhatsApp broadcast tips.` }]
+      })
+    });
+    const data = await res.json();
+    out.textContent = data.content?.[0]?.text || 'Could not generate plan. Try again.';
+  } catch(e) { out.textContent = 'Connection error. Please try again.'; }
+  btn.disabled = false; btn.textContent = '🚀 Build Campaign Plan';
+}
+
+// SCROLL REVEAL
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => { if(e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); io.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
