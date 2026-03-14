@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mumbai Fresh Dairy — Customer App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#f7f9f4;--white:#fff;--green:#2a6e2a;--green2:#3d8b3d;--lgreen:#e8f5e2;--yellow:#f5c518;--orange:#f07c2a;--red:#e53935;--text:#1a2310;--muted:#6b7c5e;--border:#e0ead6;--card:#fff;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:#e8ede4;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px;}
+    .phone{width:390px;min-height:844px;background:var(--bg);border-radius:44px;box-shadow:0 30px 80px rgba(0,0,0,0.25),inset 0 0 0 2px rgba(255,255,255,0.6);overflow:hidden;position:relative;}
+    .notch{width:120px;height:34px;background:#1a2310;border-radius:0 0 20px 20px;margin:0 auto;position:relative;z-index:10;}
+    .screen{display:none;flex-direction:column;min-height:810px;animation:fadeIn 0.3s ease;}
+    .screen.active{display:flex;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+    /* BOTTOM NAV */
+    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:390px;background:var(--white);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:16px;}
+    .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0;cursor:pointer;transition:all 0.2s;}
+    .nav-icon{font-size:1.3rem;}
+    .nav-label{font-size:0.62rem;font-weight:600;color:var(--muted);letter-spacing:0.03em;}
+    .nav-item.active .nav-label{color:var(--green);}
+    .nav-item.active .nav-icon{filter:drop-shadow(0 0 4px rgba(42,110,42,0.4));}
+
+    /* SPLASH */
+    #splash{background:linear-gradient(160deg,#1a4a1a,#2a6e2a);align-items:center;justify-content:center;gap:0;min-height:844px;}
+    .splash-logo{width:100px;height:100px;background:rgba(255,255,255,0.15);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;margin-bottom:1.5rem;animation:pop 0.6s 0.2s both;}
+    @keyframes pop{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+    .splash-name{font-size:1.8rem;font-weight:800;color:#fff;letter-spacing:-0.02em;animation:fadeIn 0.5s 0.5s both;}
+    .splash-tag{font-size:0.85rem;color:rgba(255,255,255,0.65);margin-top:0.4rem;animation:fadeIn 0.5s 0.7s both;}
+    .splash-btn{margin-top:3rem;background:var(--yellow);color:var(--text);padding:1rem 3rem;border-radius:100px;font-size:1rem;font-weight:700;border:none;cursor:pointer;animation:fadeIn 0.5s 0.9s both;transition:transform 0.2s;}
+    .splash-btn:hover{transform:scale(1.04);}
+
+    /* HOME */
+    #home{padding-bottom:80px;}
+    .home-header{background:linear-gradient(135deg,#1a4a1a,#2a6e2a);padding:50px 20px 28px;position:relative;overflow:hidden;}
+    .home-header::after{content:'🐄';position:absolute;right:-10px;bottom:-10px;font-size:7rem;opacity:0.12;}
+    .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+    .location-row{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.7);font-size:0.75rem;}
+    .location-name{color:#fff;font-weight:700;font-size:0.9rem;}
+    .header-avatar{width:38px;height:38px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.9rem;color:var(--text);}
+    .greeting{color:rgba(255,255,255,0.8);font-size:0.85rem;}
+    .greeting strong{color:#fff;font-size:1.1rem;display:block;margin-top:2px;}
+    .search-bar{background:rgba(255,255,255,0.15);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-top:16px;border:1px solid rgba(255,255,255,0.2);}
+    .search-bar input{background:none;border:none;outline:none;color:#fff;font-size:0.88rem;flex:1;font-family:inherit;}
+    .search-bar input::placeholder{color:rgba(255,255,255,0.55);}
+
+    /* SUBSCRIPTION BANNER */
+    .sub-banner{margin:16px;background:linear-gradient(135deg,#f5c518,#f07c2a);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+    .sub-icon{font-size:2rem;}
+    .sub-title{font-size:0.85rem;font-weight:700;color:#1a2310;}
+    .sub-sub{font-size:0.72rem;color:rgba(26,35,16,0.7);margin-top:1px;}
+    .sub-arrow{margin-left:auto;font-size:1.2rem;color:#1a2310;}
+
+    /* SECTION */
+    .sec-header{display:flex;justify-content:space-between;align-items:center;padding:0 16px;margin:20px 0 12px;}
+    .sec-title{font-size:1rem;font-weight:700;}
+    .sec-link{font-size:0.78rem;color:var(--green);font-weight:600;}
+
+    /* CATEGORY SCROLL */
+    .cat-scroll{display:flex;gap:10px;padding:0 16px;overflow-x:auto;scrollbar-width:none;}
+    .cat-scroll::-webkit-scrollbar{display:none;}
+    .cat-pill{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;flex-shrink:0;}
+    .cat-circle{width:62px;height:62px;border-radius:50%;background:var(--lgreen);display:flex;align-items:center;justify-content:center;font-size:1.6rem;border:2px solid var(--border);transition:all 0.2s;}
+    .cat-pill.active .cat-circle{background:var(--green);border-color:var(--green);}
+    .cat-name{font-size:0.68rem;font-weight:600;color:var(--muted);}
+    .cat-pill.active .cat-name{color:var(--green);}
+
+    /* PRODUCT CARDS */
+    .products-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;}
+    .prod-card{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
+    .prod-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(42,110,42,0.12);}
+    .prod-img{height:110px;display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;}
+    .prod-badge{position:absolute;top:8px;left:8px;background:var(--green);color:#fff;font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:0.04em;}
+    .prod-badge.offer{background:var(--red);}
+    .prod-info{padding:10px 12px 12px;}
+    .prod-name{font-size:0.82rem;font-weight:700;margin-bottom:2px;}
+    .prod-weight{font-size:0.7rem;color:var(--muted);}
+    .prod-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+    .prod-price{font-size:0.95rem;font-weight:800;color:var(--green);}
+    .add-btn{background:var(--green);color:#fff;border:none;border-radius:8px;width:30px;height:30px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.15s;}
+    .add-btn:active{transform:scale(0.9);}
+    .qty-ctrl{display:flex;align-items:center;gap:0;background:var(--lgreen);border-radius:8px;overflow:hidden;}
+    .qty-btn{background:none;border:none;width:28px;height:30px;font-size:1rem;cursor:pointer;color:var(--green);font-weight:700;}
+    .qty-num{font-size:0.82rem;font-weight:700;color:var(--green);min-width:20px;text-align:center;}
+
+    /* OFFERS SCROLL */
+    .offers-scroll{display:flex;gap:12px;padding:0 16px;overflow-x:auto;scrollbar-width:none;}
+    .offers-scroll::-webkit-scrollbar{display:none;}
+    .offer-card{flex-shrink:0;width:260px;background:linear-gradient(135deg,#1a4a1a,#2a6e2a);border-radius:16px;padding:16px;position:relative;overflow:hidden;cursor:pointer;}
+    .offer-card::after{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,0.06);border-radius:50%;}
+    .offer-tag{background:var(--yellow);color:var(--text);font-size:0.65rem;font-weight:800;padding:3px 8px;border-radius:100px;display:inline-block;margin-bottom:8px;letter-spacing:0.05em;}
+    .offer-title{color:#fff;font-size:0.9rem;font-weight:700;margin-bottom:4px;}
+    .offer-sub{color:rgba(255,255,255,0.65);font-size:0.73rem;}
+    .offer-emoji{position:absolute;right:16px;bottom:12px;font-size:2.2rem;opacity:0.8;}
+
+    /* SUBSCRIPTION SCREEN */
+    #subscribe{padding-bottom:80px;}
+    .sub-header{background:linear-gradient(135deg,#1a4a1a,#2a6e2a);padding:50px 20px 24px;}
+    .sub-header h2{color:#fff;font-size:1.3rem;font-weight:800;}
+    .sub-header p{color:rgba(255,255,255,0.7);font-size:0.82rem;margin-top:4px;}
+    .plan-card{margin:12px 16px;background:var(--card);border-radius:18px;border:2px solid var(--border);padding:18px;cursor:pointer;transition:all 0.2s;position:relative;}
+    .plan-card.selected{border-color:var(--green);background:var(--lgreen);}
+    .plan-top{display:flex;justify-content:space-between;align-items:flex-start;}
+    .plan-name{font-size:1rem;font-weight:800;}
+    .plan-badge{background:var(--green);color:#fff;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:100px;}
+    .plan-badge.gold{background:var(--yellow);color:var(--text);}
+    .plan-price{font-size:1.5rem;font-weight:800;color:var(--green);margin:8px 0 4px;}
+    .plan-price span{font-size:0.8rem;font-weight:500;color:var(--muted);}
+    .plan-features{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
+    .plan-feat{font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:6px;}
+    .plan-feat::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+    .plan-select{position:absolute;top:18px;right:18px;width:20px;height:20px;border-radius:50%;border:2px solid var(--border);transition:all 0.2s;}
+    .plan-card.selected .plan-select{background:var(--green);border-color:var(--green);}
+    .subscribe-now-btn{margin:16px;background:var(--green);color:#fff;width:calc(100% - 32px);padding:1rem;border-radius:14px;font-size:1rem;font-weight:700;border:none;cursor:pointer;transition:transform 0.2s;}
+    .subscribe-now-btn:hover{transform:scale(1.02);}
+
+    /* TRACK ORDER SCREEN */
+    #track{padding-bottom:80px;}
+    .track-header{background:linear-gradient(135deg,#1a4a1a,#2a6e2a);padding:50px 20px 24px;}
+    .track-header h2{color:#fff;font-size:1.3rem;font-weight:800;}
+    .track-header p{color:rgba(255,255,255,0.7);font-size:0.82rem;margin-top:4px;}
+    .order-card{margin:16px;background:var(--card);border-radius:18px;border:1px solid var(--border);overflow:hidden;}
+    .order-top{padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
+    .order-id{font-size:0.78rem;color:var(--muted);}
+    .order-status{font-size:0.75rem;font-weight:700;padding:4px 10px;border-radius:100px;}
+    .status-out{background:#fff3e0;color:#f07c2a;}
+    .status-del{background:#e8f5e2;color:#2a6e2a;}
+    .status-prep{background:#e3f2fd;color:#1565c0;}
+    .track-steps{padding:20px 16px;}
+    .step{display:flex;gap:12px;margin-bottom:20px;position:relative;}
+    .step:not(:last-child)::after{content:'';position:absolute;left:15px;top:34px;width:2px;height:calc(100% - 10px);background:var(--border);}
+    .step.done::after{background:var(--green);}
+    .step-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.85rem;background:var(--bg);}
+    .step.done .step-dot{background:var(--green);border-color:var(--green);color:#fff;}
+    .step.active .step-dot{background:var(--orange);border-color:var(--orange);color:#fff;animation:pulse2 1.5s infinite;}
+    @keyframes pulse2{0%,100%{box-shadow:0 0 0 0 rgba(240,124,42,0.4)}50%{box-shadow:0 0 0 8px rgba(240,124,42,0)}}
+    .step-info{}
+    .step-title{font-size:0.85rem;font-weight:700;}
+    .step-time{font-size:0.72rem;color:var(--muted);margin-top:2px;}
+    .map-placeholder{margin:0 16px 16px;background:linear-gradient(135deg,#e8f5e2,#c8e6c9);border-radius:16px;height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;border:1px solid var(--border);}
+    .map-placeholder span{font-size:2.5rem;}
+    .map-placeholder p{font-size:0.8rem;color:var(--muted);font-weight:600;}
+    .delivery-info{margin:0 16px 16px;background:var(--card);border-radius:14px;border:1px solid var(--border);padding:14px;display:flex;align-items:center;gap:12px;}
+    .delivery-avatar{width:44px;height:44px;background:var(--lgreen);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+    .delivery-name{font-size:0.88rem;font-weight:700;}
+    .delivery-role{font-size:0.72rem;color:var(--muted);}
+    .delivery-call{margin-left:auto;background:var(--green);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;}
+
+    /* PROFILE SCREEN */
+    #profile{padding-bottom:80px;}
+    .profile-header{background:linear-gradient(135deg,#1a4a1a,#2a6e2a);padding:50px 20px 32px;text-align:center;}
+    .profile-avatar{width:80px;height:80px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;margin:0 auto 12px;}
+    .profile-name{color:#fff;font-size:1.2rem;font-weight:800;}
+    .profile-phone{color:rgba(255,255,255,0.7);font-size:0.82rem;margin-top:4px;}
+    .profile-stats{display:flex;gap:1px;background:var(--border);margin:16px;border-radius:16px;overflow:hidden;}
+    .pstat{flex:1;background:var(--card);padding:14px 8px;text-align:center;}
+    .pstat-num{font-size:1.2rem;font-weight:800;color:var(--green);}
+    .pstat-label{font-size:0.65rem;color:var(--muted);margin-top:2px;}
+    .menu-list{margin:0 16px;display:flex;flex-direction:column;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;}
+    .menu-item{background:var(--card);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background 0.2s;}
+    .menu-item:hover{background:#f0f4ec;}
+    .menu-item-icon{width:36px;height:36px;border-radius:10px;background:var(--lgreen);display:flex;align-items:center;justify-content:center;font-size:1rem;}
+    .menu-item-label{font-size:0.88rem;font-weight:600;flex:1;}
+    .menu-item-arrow{color:var(--muted);font-size:0.8rem;}
+    .wallet-card{margin:16px;background:linear-gradient(135deg,#1a4a1a,#2a6e2a);border-radius:18px;padding:18px;display:flex;align-items:center;gap:14px;}
+    .wallet-icon{font-size:2rem;}
+    .wallet-label{color:rgba(255,255,255,0.7);font-size:0.78rem;}
+    .wallet-amount{color:#fff;font-size:1.3rem;font-weight:800;margin-top:2px;}
+    .wallet-add{margin-left:auto;background:var(--yellow);color:var(--text);border:none;border-radius:10px;padding:8px 14px;font-size:0.78rem;font-weight:700;cursor:pointer;}
+
+    /* CART BADGE */
+    .cart-badge{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:0.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+    .nav-icon-wrap{position:relative;display:inline-flex;}
+  </style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+
+  <!-- SPLASH -->
+  <div class="screen active" id="splash">
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;background:linear-gradient(160deg,#1a4a1a,#2a6e2a);">
+      <div class="splash-logo">🥛</div>
+      <div class="splash-name">Mumbai Fresh Dairy</div>
+      <div class="splash-tag">Mumbai's Freshest Dairy</div>
+      <button class="splash-btn" onclick="goTo('home')">Get Started →</button>
+      <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin-top:1.5rem;">Serving 18 outlets across Mumbai</p>
+    </div>
+  </div>
+
+  <!-- HOME SCREEN -->
+  <div class="screen" id="home">
+    <div class="home-header">
+      <div class="header-top">
+        <div>
+          <div class="location-row">📍 Delivering to <span style="margin-left:4px;"></span></div>
+          <div class="location-name">Malad West, Mumbai</div>
+        </div>
+        <div class="header-avatar">AC</div>
+      </div>
+      <div class="greeting">Good morning! <strong>Abhishek 👋</strong></div>
+      <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" placeholder="Search milk, curd, paneer..."/>
+      </div>
+    </div>
+
+    <!-- SUBSCRIPTION BANNER -->
+    <div class="sub-banner" onclick="goTo('subscribe')">
+      <div class="sub-icon">⭐</div>
+      <div>
+        <div class="sub-title">Subscribe & Save 15%</div>
+        <div class="sub-sub">Daily delivery, skip anytime</div>
+      </div>
+      <div class="sub-arrow">›</div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="sec-header"><span class="sec-title">Categories</span><span class="sec-link">See all</span></div>
+    <div class="cat-scroll">
+      <div class="cat-pill active" onclick="setCat(this)"><div class="cat-circle">🥛</div><div class="cat-name">Milk</div></div>
+      <div class="cat-pill" onclick="setCat(this)"><div class="cat-circle">🧈</div><div class="cat-name">Butter</div></div>
+      <div class="cat-pill" onclick="setCat(this)"><div class="cat-circle">🧀</div><div class="cat-name">Paneer</div></div>
+      <div class="cat-pill" onclick="setCat(this)"><div class="cat-circle">🥣</div><div class="cat-name">Curd</div></div>
+      <div class="cat-pill" onclick="setCat(this)"><div class="cat-circle">🧴</div><div class="cat-name">Ghee</div></div>
+      <div class="cat-pill" onclick="setCat(this)"><div class="cat-circle">🍦</div><div class="cat-name">Ice Cream</div></div>
+    </div>
+
+    <!-- OFFERS -->
+    <div class="sec-header" style="margin-top:20px;"><span class="sec-title">Today's Offers</span><span class="sec-link">View all</span></div>
+    <div class="offers-scroll">
+      <div class="offer-card"><div class="offer-tag">LIMITED TIME</div><div class="offer-title">Buy 2 Get 1 Free</div><div class="offer-sub">On all 500ml milk packs</div><div class="offer-emoji">🥛</div></div>
+      <div class="offer-card" style="background:linear-gradient(135deg,#7b3f00,#c0611a);"><div class="offer-tag" style="background:#fff;color:#7b3f00;">20% OFF</div><div class="offer-title">Fresh Paneer</div><div class="offer-sub">Today only · Limited stock</div><div class="offer-emoji">🧀</div></div>
+      <div class="offer-card" style="background:linear-gradient(135deg,#1a3a5c,#1565c0);"><div class="offer-tag" style="background:#f5c518;">SUBSCRIBE</div><div class="offer-title">Save ₹200/month</div><div class="offer-sub">With daily milk subscription</div><div class="offer-emoji">⭐</div></div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="sec-header"><span class="sec-title">Fresh Products</span><span class="sec-link">See all</span></div>
+    <div class="products-grid">
+      <div class="prod-card">
+        <div class="prod-img" style="background:#f0f7e8;"><span>🥛</span><div class="prod-badge">FRESH</div></div>
+        <div class="prod-info">
+          <div class="prod-name">Full Cream Milk</div>
+          <div class="prod-weight">500 ml</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹32</div>
+            <button class="add-btn" onclick="addItem(this)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img" style="background:#fff8e1;"><span>🧈</span><div class="prod-badge offer">20% OFF</div></div>
+        <div class="prod-info">
+          <div class="prod-name">Farm Butter</div>
+          <div class="prod-weight">100 g</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹55</div>
+            <button class="add-btn" onclick="addItem(this)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img" style="background:#fce4ec;"><span>🧀</span></div>
+        <div class="prod-info">
+          <div class="prod-name">Fresh Paneer</div>
+          <div class="prod-weight">200 g</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹80</div>
+            <button class="add-btn" onclick="addItem(this)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img" style="background:#e8f5e9;"><span>🥣</span><div class="prod-badge">PROBIOTIC</div></div>
+        <div class="prod-info">
+          <div class="prod-name">Set Dahi</div>
+          <div class="prod-weight">400 g</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹48</div>
+            <button class="add-btn" onclick="addItem(this)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img" style="background:#fff3e0;"><span>🧴</span></div>
+        <div class="prod-info">
+          <div class="prod-name">Pure Ghee</div>
+          <div class="prod-weight">250 ml</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹195</div>
+            <button class="add-btn" onclick="addItem(this)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-img" style="background:#e3f2fd;"><span>🥛</span><div class="prod-badge">A2</div></div>
+        <div class="prod-info">
+          <div class="prod-name">A2 Cow Milk</div>
+          <div class="prod-weight">1 Litre</div>
+          <div class="prod-footer">
+            <div class="prod-price">₹78</div>
+            <button class="add-btn" onclick="addItem(this)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="height:20px;"></div>
+  </div>
+
+  <!-- SUBSCRIBE SCREEN -->
+  <div class="screen" id="subscribe">
+    <div class="sub-header">
+      <h2>Choose Your Plan ⭐</h2>
+      <p>Subscribe and save up to 20% every month</p>
+    </div>
+
+    <div class="plan-card selected" onclick="selectPlan(this)">
+      <div class="plan-top"><div class="plan-name">Daily Essentials</div><div class="plan-badge gold">POPULAR</div></div>
+      <div class="plan-price">₹799 <span>/ month</span></div>
+      <div class="plan-features">
+        <div class="plan-feat">500ml Full Cream Milk daily</div>
+        <div class="plan-feat">100g Butter weekly</div>
+        <div class="plan-feat">400g Curd twice a week</div>
+        <div class="plan-feat">Free delivery every day</div>
+        <div class="plan-feat">Skip or pause anytime</div>
+      </div>
+      <div class="plan-select"></div>
+    </div>
+
+    <div class="plan-card" onclick="selectPlan(this)">
+      <div class="plan-top"><div class="plan-name">Family Pack</div><div class="plan-badge">BEST VALUE</div></div>
+      <div class="plan-price">₹1,499 <span>/ month</span></div>
+      <div class="plan-features">
+        <div class="plan-feat">1L Full Cream Milk daily</div>
+        <div class="plan-feat">250ml Ghee monthly</div>
+        <div class="plan-feat">200g Paneer weekly</div>
+        <div class="plan-feat">500g Curd 3x a week</div>
+        <div class="plan-feat">Priority morning delivery</div>
+        <div class="plan-feat">20% off on all extra orders</div>
+      </div>
+      <div class="plan-select"></div>
+    </div>
+
+    <div class="plan-card" onclick="selectPlan(this)">
+      <div class="plan-top"><div class="plan-name">Milk Only</div><div class="plan-badge" style="background:#eee;color:#666;">BASIC</div></div>
+      <div class="plan-price">₹399 <span>/ month</span></div>
+      <div class="plan-features">
+        <div class="plan-feat">500ml Toned Milk daily</div>
+        <div class="plan-feat">Free delivery every day</div>
+        <div class="plan-feat">Skip anytime</div>
+      </div>
+      <div class="plan-select"></div>
+    </div>
+
+    <button class="subscribe-now-btn" onclick="alert('🎉 Subscribed! Your milk delivery starts tomorrow morning at 7 AM.')">Subscribe Now →</button>
+  </div>
+
+  <!-- TRACK ORDER SCREEN -->
+  <div class="screen" id="track">
+    <div class="track-header">
+      <h2>Track Your Order 🚴</h2>
+      <p>Order #MFD-20482 · Today 7:00 AM</p>
+    </div>
+
+    <div class="order-card">
+      <div class="order-top">
+        <div>
+          <div class="order-id">Order #MFD-20482</div>
+          <div style="font-size:0.82rem;font-weight:700;margin-top:2px;">500ml Milk + Curd 400g</div>
+        </div>
+        <div class="order-status status-out">Out for delivery</div>
+      </div>
+      <div class="track-steps">
+        <div class="step done">
+          <div class="step-dot">✓</div>
+          <div class="step-info"><div class="step-title">Order Confirmed</div><div class="step-time">6:00 AM · Today</div></div>
+        </div>
+        <div class="step done">
+          <div class="step-dot">✓</div>
+          <div class="step-info"><div class="step-title">Packed at Outlet</div><div class="step-time">6:30 AM · Malad West outlet</div></div>
+        </div>
+        <div class="step active">
+          <div class="step-dot">🚴</div>
+          <div class="step-info"><div class="step-title">Out for Delivery</div><div class="step-time">ETA: 7:15 AM · 2 stops away</div></div>
+        </div>
+        <div class="step">
+          <div class="step-dot">🏠</div>
+          <div class="step-info"><div class="step-title">Delivered</div><div class="step-time">Pending</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-placeholder">
+      <span>🗺️</span>
+      <p>Live delivery map · 2 stops away</p>
+    </div>
+
+    <div class="delivery-info">
+      <div class="delivery-avatar">🚴</div>
+      <div>
+        <div class="delivery-name">Suresh Kumar</div>
+        <div class="delivery-role">Delivery Partner · ⭐ 4.9</div>
+      </div>
+      <button class="delivery-call" onclick="alert('Calling Suresh...')">📞 Call</button>
+    </div>
+  </div>
+
+  <!-- PROFILE SCREEN -->
+  <div class="screen" id="profile">
+    <div class="profile-header">
+      <div class="profile-avatar">AC</div>
+      <div class="profile-name">Abhishek Chavhare</div>
+      <div class="profile-phone">+91 99999 99999 · Malad West</div>
+    </div>
+
+    <div class="wallet-card">
+      <div class="wallet-icon">💰</div>
+      <div>
+        <div class="wallet-label">Dairy Wallet Balance</div>
+        <div class="wallet-amount">₹240.00</div>
+      </div>
+      <button class="wallet-add" onclick="alert('Adding ₹500 to wallet...')">+ Add Money</button>
+    </div>
+
+    <div class="profile-stats">
+      <div class="pstat"><div class="pstat-num">48</div><div class="pstat-label">Orders</div></div>
+      <div class="pstat"><div class="pstat-num">3</div><div class="pstat-label">Months Active</div></div>
+      <div class="pstat"><div class="pstat-num">₹180</div><div class="pstat-label">Saved</div></div>
+    </div>
+
+    <div class="sec-header"><span class="sec-title">Account</span></div>
+    <div class="menu-list">
+      <div class="menu-item" onclick="alert('My Orders screen')"><div class="menu-item-icon">📦</div><div class="menu-item-label">My Orders</div><div class="menu-item-arrow">›</div></div>
+      <div class="menu-item" onclick="alert('Subscription management')"><div class="menu-item-icon">⭐</div><div class="menu-item-label">My Subscription</div><div class="menu-item-arrow">›</div></div>
+      <div class="menu-item" onclick="alert('Address book')"><div class="menu-item-icon">📍</div><div class="menu-item-label">Saved Addresses</div><div class="menu-item-arrow">›</div></div>
+      <div class="menu-item" onclick="alert('Payment methods')"><div class="menu-item-icon">💳</div><div class="menu-item-label">Payment Methods</div><div class="menu-item-arrow">›</div></div>
+      <div class="menu-item" onclick="alert('Referral program')"><div class="menu-item-icon">🎁</div><div class="menu-item-label">Refer & Earn</div><div class="menu-item-arrow">›</div></div>
+      <div class="menu-item" onclick="alert('Help & support')"><div class="menu-item-icon">💬</div><div class="menu-item-label">Help & Support</div><div class="menu-item-arrow">›</div></div>
+    </div>
+    <div style="height:20px;"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="goTo('home');setNav(this)">
+      <div class="nav-icon">🏠</div>
+      <div class="nav-label">Home</div>
+    </div>
+    <div class="nav-item" onclick="goTo('subscribe');setNav(this)">
+      <div class="nav-icon">⭐</div>
+      <div class="nav-label">Subscribe</div>
+    </div>
+    <div class="nav-item" onclick="goTo('track');setNav(this)">
+      <div class="nav-icon-wrap">
+        <div class="nav-icon">🚴</div>
+      </div>
+      <div class="nav-label">Track</div>
+    </div>
+    <div class="nav-item" onclick="goTo('profile');setNav(this)">
+      <div class="nav-icon-wrap">
+        <div class="nav-icon">👤</div>
+        <div class="cart-badge" id="cart-count">0</div>
+      </div>
+      <div class="nav-label">Profile</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let cart = 0;
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById(id).scrollTop = 0;
+  }
+  function setNav(el) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function addItem(btn) {
+    cart++;
+    document.getElementById('cart-count').textContent = cart;
+    const wrap = btn.parentElement;
+    const ctrl = document.createElement('div');
+    ctrl.className = 'qty-ctrl';
+    ctrl.innerHTML = `<button class="qty-btn" onclick="removeItem(this)">−</button><span class="qty-num">1</span><button class="qty-btn" onclick="addMore(this)">+</button>`;
+    btn.replaceWith(ctrl);
+  }
+  function addMore(btn) {
+    cart++;
+    document.getElementById('cart-count').textContent = cart;
+    const span = btn.previousElementSibling;
+    span.textContent = parseInt(span.textContent) + 1;
+  }
+  function removeItem(btn) {
+    const span = btn.nextElementSibling;
+    let q = parseInt(span.textContent) - 1;
+    if (q <= 0) {
+      cart = Math.max(0, cart - 1);
+      document.getElementById('cart-count').textContent = cart;
+      const ctrl = btn.closest('.qty-ctrl');
+      const addBtn = document.createElement('button');
+      addBtn.className = 'add-btn';
+      addBtn.textContent = '+';
+      addBtn.onclick = function(){ addItem(this); };
+      ctrl.replaceWith(addBtn);
+    } else {
+      cart--;
+      document.getElementById('cart-count').textContent = cart;
+      span.textContent = q;
+    }
+  }
+  function setCat(el) {
+    document.querySelectorAll('.cat-pill').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function selectPlan(el) {
+    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+</script>
+</body>
+</html>

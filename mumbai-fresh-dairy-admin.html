@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mumbai Fresh Dairy — Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#f4f6f0;--white:#fff;--green:#2a6e2a;--green2:#3d8b3d;--lgreen:#e8f5e2;--yellow:#f5c518;--orange:#f07c2a;--red:#e53935;--blue:#1565c0;--text:#1a2310;--muted:#6b7c5e;--border:#e0ead6;--sidebar:#1a2e1a;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;}
+
+    /* SIDEBAR */
+    .sidebar{width:240px;background:var(--sidebar);min-height:100vh;padding:0;flex-shrink:0;display:flex;flex-direction:column;}
+    .sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,0.08);}
+    .sidebar-logo-icon{font-size:1.6rem;margin-bottom:6px;}
+    .sidebar-logo-name{color:#fff;font-size:1rem;font-weight:800;letter-spacing:-0.01em;}
+    .sidebar-logo-tag{color:rgba(255,255,255,0.45);font-size:0.7rem;margin-top:1px;}
+    .sidebar-section{padding:16px 12px 4px;color:rgba(255,255,255,0.3);font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;}
+    .sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 16px;margin:1px 8px;border-radius:10px;cursor:pointer;transition:all 0.2s;color:rgba(255,255,255,0.6);font-size:0.84rem;font-weight:500;}
+    .sidebar-item:hover{background:rgba(255,255,255,0.08);color:#fff;}
+    .sidebar-item.active{background:var(--green);color:#fff;}
+    .sidebar-item-icon{font-size:1rem;width:20px;text-align:center;}
+    .sidebar-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:100px;}
+    .sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,0.08);}
+    .admin-info{display:flex;align-items:center;gap:10px;}
+    .admin-avatar{width:34px;height:34px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;color:var(--text);}
+    .admin-name{color:#fff;font-size:0.82rem;font-weight:600;}
+    .admin-role{color:rgba(255,255,255,0.45);font-size:0.68rem;}
+
+    /* MAIN */
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+    .topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+    .page-title{font-size:1.1rem;font-weight:800;}
+    .topbar-right{display:flex;align-items:center;gap:12px;}
+    .outlet-select{background:var(--lgreen);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:0.82rem;font-weight:600;color:var(--green);cursor:pointer;font-family:inherit;}
+    .notif-btn{width:34px;height:34px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;border:1px solid var(--border);position:relative;}
+    .notif-dot{position:absolute;top:6px;right:7px;width:7px;height:7px;background:var(--red);border-radius:50%;border:1.5px solid var(--white);}
+
+    .content{flex:1;overflow-y:auto;padding:24px 28px;}
+
+    /* STAT CARDS */
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+    .stat-card{background:var(--white);border-radius:16px;padding:18px;border:1px solid var(--border);position:relative;overflow:hidden;}
+    .stat-card::after{content:attr(data-icon);position:absolute;right:-8px;bottom:-8px;font-size:4rem;opacity:0.08;}
+    .stat-label{font-size:0.72rem;color:var(--muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:8px;}
+    .stat-value{font-size:1.8rem;font-weight:800;letter-spacing:-0.02em;}
+    .stat-change{font-size:0.72rem;margin-top:4px;display:flex;align-items:center;gap:4px;}
+    .change-up{color:#2a6e2a;}
+    .change-down{color:var(--red);}
+
+    /* GRID 2 COL */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+    .grid-3{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px;}
+
+    /* CARD */
+    .card{background:var(--white);border-radius:16px;border:1px solid var(--border);overflow:hidden;}
+    .card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+    .card-title{font-size:0.92rem;font-weight:700;}
+    .card-action{font-size:0.75rem;color:var(--green);font-weight:600;cursor:pointer;}
+    .card-body{padding:16px 20px;}
+
+    /* ORDERS TABLE */
+    table{width:100%;border-collapse:collapse;}
+    th{font-size:0.7rem;font-weight:700;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);letter-spacing:0.04em;text-transform:uppercase;background:#fafcf8;}
+    td{font-size:0.82rem;padding:10px 12px;border-bottom:1px solid var(--border);}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:#fafcf8;}
+    .status-pill{display:inline-block;padding:3px 10px;border-radius:100px;font-size:0.68rem;font-weight:700;}
+    .s-delivered{background:#e8f5e2;color:#2a6e2a;}
+    .s-out{background:#fff3e0;color:#f07c2a;}
+    .s-pending{background:#e3f2fd;color:#1565c0;}
+    .s-cancelled{background:#fce4ec;color:#c62828;}
+
+    /* OUTLET CARDS */
+    .outlet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 20px;}
+    .outlet-card{background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;}
+    .outlet-card:hover{border-color:var(--green);background:var(--lgreen);}
+    .outlet-name{font-size:0.82rem;font-weight:700;margin-bottom:4px;}
+    .outlet-area{font-size:0.7rem;color:var(--muted);}
+    .outlet-orders{font-size:0.72rem;color:var(--green);font-weight:600;margin-top:8px;}
+    .outlet-status{width:8px;height:8px;border-radius:50%;background:#4caf50;display:inline-block;margin-right:4px;}
+
+    /* MINI CHART */
+    .mini-chart{display:flex;align-items:flex-end;gap:6px;height:60px;margin-top:4px;}
+    .bar{flex:1;border-radius:4px 4px 0 0;background:var(--lgreen);border:1px solid var(--border);transition:background 0.2s;cursor:pointer;}
+    .bar:hover{background:var(--green);}
+    .bar.active{background:var(--green);}
+    .chart-labels{display:flex;gap:6px;margin-top:4px;}
+    .chart-label{flex:1;font-size:0.6rem;color:var(--muted);text-align:center;}
+
+    /* INVENTORY */
+    .inv-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+    .inv-item:last-child{border-bottom:none;}
+    .inv-icon{width:36px;height:36px;border-radius:10px;background:var(--lgreen);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+    .inv-name{font-size:0.82rem;font-weight:600;flex:1;}
+    .inv-stock{font-size:0.75rem;color:var(--muted);}
+    .inv-bar-wrap{width:80px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+    .inv-bar{height:100%;border-radius:3px;}
+    .inv-bar.high{background:var(--green);}
+    .inv-bar.med{background:var(--yellow);}
+    .inv-bar.low{background:var(--red);}
+
+    /* SCREEN TABS */
+    .screen{display:none;}
+    .screen.active{display:block;}
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">🥛</div>
+    <div class="sidebar-logo-name">Mumbai Fresh Dairy</div>
+    <div class="sidebar-logo-tag">Admin Panel · 18 Outlets</div>
+  </div>
+
+  <div class="sidebar-section">Main</div>
+  <div class="sidebar-item active" onclick="showPage('dashboard',this)"><span class="sidebar-item-icon">📊</span>Dashboard</div>
+  <div class="sidebar-item" onclick="showPage('orders',this)"><span class="sidebar-item-icon">📦</span>Orders<span class="sidebar-badge">12</span></div>
+  <div class="sidebar-item" onclick="showPage('outlets',this)"><span class="sidebar-item-icon">🏪</span>Outlets</div>
+  <div class="sidebar-item" onclick="showPage('inventory',this)"><span class="sidebar-item-icon">🧮</span>Inventory</div>
+  <div class="sidebar-item" onclick="showPage('customers',this)"><span class="sidebar-item-icon">👥</span>Customers</div>
+
+  <div class="sidebar-section">Finance</div>
+  <div class="sidebar-item" onclick="showPage('revenue',this)"><span class="sidebar-item-icon">💰</span>Revenue</div>
+  <div class="sidebar-item" onclick="showPage('delivery',this)"><span class="sidebar-item-icon">🚴</span>Delivery Staff</div>
+
+  <div class="sidebar-section">Settings</div>
+  <div class="sidebar-item" onclick="showPage('settings',this)"><span class="sidebar-item-icon">⚙️</span>Settings</div>
+
+  <div class="sidebar-footer">
+    <div class="admin-info">
+      <div class="admin-avatar">AM</div>
+      <div><div class="admin-name">Abhishek (Owner)</div><div class="admin-role">Super Admin</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="page-title" id="page-title">Dashboard</div>
+    <div class="topbar-right">
+      <select class="outlet-select">
+        <option>All 18 Outlets</option>
+        <option>Malad West</option>
+        <option>Borivali East</option>
+        <option>Kandivali</option>
+        <option>Andheri West</option>
+        <option>Goregaon</option>
+      </select>
+      <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+      <div class="admin-avatar" style="width:34px;height:34px;font-size:0.78rem;">AM</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="screen active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card" data-icon="📦">
+          <div class="stat-label">Today's Orders</div>
+          <div class="stat-value">1,284</div>
+          <div class="stat-change change-up">↑ 8.2% vs yesterday</div>
+        </div>
+        <div class="stat-card" data-icon="💰">
+          <div class="stat-label">Today's Revenue</div>
+          <div class="stat-value">₹48,320</div>
+          <div class="stat-change change-up">↑ 5.1% vs yesterday</div>
+        </div>
+        <div class="stat-card" data-icon="👥">
+          <div class="stat-label">Active Subscribers</div>
+          <div class="stat-value">3,842</div>
+          <div class="stat-change change-up">↑ 24 new today</div>
+        </div>
+        <div class="stat-card" data-icon="🚴">
+          <div class="stat-label">Deliveries Done</div>
+          <div class="stat-value">1,091</div>
+          <div class="stat-change change-down">↓ 193 pending</div>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <!-- ORDERS CHART -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">Orders This Week</span><span class="card-action">View Report →</span></div>
+          <div class="card-body">
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;">Total: 8,421 orders · Avg: ₹376/order</div>
+            <div class="mini-chart">
+              <div class="bar" style="height:55%;" title="Mon: 1100"></div>
+              <div class="bar" style="height:70%;" title="Tue: 1240"></div>
+              <div class="bar" style="height:62%;" title="Wed: 1180"></div>
+              <div class="bar" style="height:80%;" title="Thu: 1320"></div>
+              <div class="bar active" style="height:75%;" title="Fri: 1284"></div>
+              <div class="bar" style="height:40%;" title="Sat: 897"></div>
+              <div class="bar" style="height:35%;" title="Sun: 400"></div>
+            </div>
+            <div class="chart-labels">
+              <span class="chart-label">Mon</span><span class="chart-label">Tue</span><span class="chart-label">Wed</span><span class="chart-label">Thu</span><span class="chart-label">Fri</span><span class="chart-label">Sat</span><span class="chart-label">Sun</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- INVENTORY ALERT -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">Stock Levels</span><span class="card-action">Manage →</span></div>
+          <div class="card-body">
+            <div class="inv-item"><div class="inv-icon">🥛</div><div><div class="inv-name">Full Cream Milk</div><div class="inv-stock">842 litres left</div></div><div class="inv-bar-wrap"><div class="inv-bar high" style="width:80%"></div></div></div>
+            <div class="inv-item"><div class="inv-icon">🧀</div><div><div class="inv-name">Paneer</div><div class="inv-stock">48 kg left</div></div><div class="inv-bar-wrap"><div class="inv-bar med" style="width:35%"></div></div></div>
+            <div class="inv-item"><div class="inv-icon">🧈</div><div><div class="inv-name">Butter</div><div class="inv-stock">12 kg left ⚠️</div></div><div class="inv-bar-wrap"><div class="inv-bar low" style="width:15%"></div></div></div>
+            <div class="inv-item"><div class="inv-icon">🧴</div><div><div class="inv-name">Ghee</div><div class="inv-stock">95 litres left</div></div><div class="inv-bar-wrap"><div class="inv-bar high" style="width:70%"></div></div></div>
+            <div class="inv-item"><div class="inv-icon">🥣</div><div><div class="inv-name">Set Dahi</div><div class="inv-stock">210 kg left</div></div><div class="inv-bar-wrap"><div class="inv-bar high" style="width:65%"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT ORDERS TABLE -->
+      <div class="card" style="margin-bottom:24px;">
+        <div class="card-header"><span class="card-title">Recent Orders</span><span class="card-action">View all →</span></div>
+        <table>
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Outlet</th><th>Items</th><th>Amount</th><th>Status</th><th>Time</th></tr></thead>
+          <tbody>
+            <tr><td>#MFD-20489</td><td>Priya Sharma</td><td>Malad West</td><td>Milk 1L + Curd</td><td>₹96</td><td><span class="status-pill s-delivered">Delivered</span></td><td>7:02 AM</td></tr>
+            <tr><td>#MFD-20488</td><td>Rahul Mehta</td><td>Borivali East</td><td>A2 Milk + Butter</td><td>₹133</td><td><span class="status-pill s-out">Out for delivery</span></td><td>7:08 AM</td></tr>
+            <tr><td>#MFD-20487</td><td>Sunita Patel</td><td>Kandivali</td><td>Family Pack Sub</td><td>₹1,499</td><td><span class="status-pill s-delivered">Delivered</span></td><td>6:58 AM</td></tr>
+            <tr><td>#MFD-20486</td><td>Vikram Joshi</td><td>Andheri West</td><td>Ghee 250ml</td><td>₹195</td><td><span class="status-pill s-pending">Packing</span></td><td>7:15 AM</td></tr>
+            <tr><td>#MFD-20485</td><td>Meera Nair</td><td>Goregaon</td><td>Paneer 200g</td><td>₹80</td><td><span class="status-pill s-cancelled">Cancelled</span></td><td>6:45 AM</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- OUTLET OVERVIEW -->
+      <div class="card" style="margin-bottom:24px;">
+        <div class="card-header"><span class="card-title">Outlet Performance Today</span><span class="card-action">View all 18 →</span></div>
+        <div class="outlet-grid">
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Malad West</div><div class="outlet-area">Zone A · 4 delivery staff</div><div class="outlet-orders">284 orders · ₹10,820</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Borivali East</div><div class="outlet-area">Zone B · 3 delivery staff</div><div class="outlet-orders">198 orders · ₹7,480</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Kandivali West</div><div class="outlet-area">Zone B · 3 delivery staff</div><div class="outlet-orders">221 orders · ₹8,140</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Andheri West</div><div class="outlet-area">Zone C · 5 delivery staff</div><div class="outlet-orders">312 orders · ₹12,480</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Goregaon East</div><div class="outlet-area">Zone B · 3 delivery staff</div><div class="outlet-orders">168 orders · ₹5,920</div></div>
+          <div class="outlet-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:0.78rem;"><div style="text-align:center">+13 more<br/>outlets</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTHER PAGES (placeholder) -->
+    <div class="screen" id="page-orders">
+      <div class="card">
+        <div class="card-header"><span class="card-title">All Orders Today</span><span class="card-action">Export CSV</span></div>
+        <table>
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Outlet</th><th>Items</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>#MFD-20489</td><td>Priya Sharma</td><td>Malad West</td><td>Milk 1L + Curd</td><td>₹96</td><td><span class="status-pill s-delivered">Delivered</span></td><td><button style="background:var(--lgreen);border:none;border-radius:6px;padding:4px 10px;font-size:0.72rem;cursor:pointer;color:var(--green);font-weight:600;">View</button></td></tr>
+            <tr><td>#MFD-20488</td><td>Rahul Mehta</td><td>Borivali East</td><td>A2 Milk + Butter</td><td>₹133</td><td><span class="status-pill s-out">Out for delivery</span></td><td><button style="background:var(--lgreen);border:none;border-radius:6px;padding:4px 10px;font-size:0.72rem;cursor:pointer;color:var(--green);font-weight:600;">Track</button></td></tr>
+            <tr><td>#MFD-20487</td><td>Sunita Patel</td><td>Kandivali</td><td>Family Pack Sub</td><td>₹1,499</td><td><span class="status-pill s-delivered">Delivered</span></td><td><button style="background:var(--lgreen);border:none;border-radius:6px;padding:4px 10px;font-size:0.72rem;cursor:pointer;color:var(--green);font-weight:600;">View</button></td></tr>
+            <tr><td>#MFD-20486</td><td>Vikram Joshi</td><td>Andheri West</td><td>Ghee 250ml</td><td>₹195</td><td><span class="status-pill s-pending">Packing</span></td><td><button style="background:var(--lgreen);border:none;border-radius:6px;padding:4px 10px;font-size:0.72rem;cursor:pointer;color:var(--green);font-weight:600;">View</button></td></tr>
+            <tr><td>#MFD-20485</td><td>Meera Nair</td><td>Goregaon</td><td>Paneer 200g</td><td>₹80</td><td><span class="status-pill s-cancelled">Cancelled</span></td><td><button style="background:#fce4ec;border:none;border-radius:6px;padding:4px 10px;font-size:0.72rem;cursor:pointer;color:#c62828;font-weight:600;">Refund</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="screen" id="page-outlets">
+      <div class="card">
+        <div class="card-header"><span class="card-title">All 18 Outlets</span><span class="card-action">+ Add Outlet</span></div>
+        <div class="outlet-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Malad West</div><div class="outlet-area">Zone A</div><div class="outlet-orders">284 orders today</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Borivali East</div><div class="outlet-area">Zone B</div><div class="outlet-orders">198 orders today</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Kandivali West</div><div class="outlet-area">Zone B</div><div class="outlet-orders">221 orders today</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Andheri West</div><div class="outlet-area">Zone C</div><div class="outlet-orders">312 orders today</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Goregaon East</div><div class="outlet-area">Zone B</div><div class="outlet-orders">168 orders today</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Vile Parle</div><div class="outlet-area">Zone C</div><div class="outlet-orders">142 orders today</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Bandra West</div><div class="outlet-area">Zone D</div><div class="outlet-orders">289 orders today</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Dadar</div><div class="outlet-area">Zone E</div><div class="outlet-orders">201 orders today</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Thane West</div><div class="outlet-area">Zone F</div><div class="outlet-orders">176 orders today</div></div>
+          <div class="outlet-card"><div class="outlet-name"><span class="outlet-status"></span>Mulund</div><div class="outlet-area">Zone F</div><div class="outlet-orders">132 orders today</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="page-inventory">
+      <div class="stats-grid">
+        <div class="stat-card" data-icon="🥛"><div class="stat-label">Total Milk (litres)</div><div class="stat-value">4,280</div><div class="stat-change change-up">↑ Restocked today</div></div>
+        <div class="stat-card" data-icon="🧀"><div class="stat-label">Paneer (kg)</div><div class="stat-value">380</div><div class="stat-change change-down">↓ Low at 3 outlets</div></div>
+        <div class="stat-card" data-icon="🧈"><div class="stat-label">Butter (kg)</div><div class="stat-value">142</div><div class="stat-change change-down">⚠️ Order needed</div></div>
+        <div class="stat-card" data-icon="🧴"><div class="stat-label">Ghee (litres)</div><div class="stat-value">620</div><div class="stat-change change-up">↑ Good stock</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Inventory by Product</span><span class="card-action">+ Restock Order</span></div>
+        <table>
+          <thead><tr><th>Product</th><th>Total Stock</th><th>Outlets Low</th><th>Avg Daily Use</th><th>Days Left</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>🥛 Full Cream Milk 500ml</td><td>8,420 units</td><td>0 outlets</td><td>1,284 units</td><td>6 days</td><td><span class="status-pill s-delivered">Sufficient</span></td></tr>
+            <tr><td>🧀 Fresh Paneer 200g</td><td>1,900 units</td><td>3 outlets</td><td>480 units</td><td>3 days</td><td><span class="status-pill s-out">Order Soon</span></td></tr>
+            <tr><td>🧈 Farm Butter 100g</td><td>600 units</td><td>7 outlets</td><td>320 units</td><td>1 day</td><td><span class="status-pill s-cancelled">Order Now</span></td></tr>
+            <tr><td>🥣 Set Dahi 400g</td><td>5,250 units</td><td>0 outlets</td><td>840 units</td><td>6 days</td><td><span class="status-pill s-delivered">Sufficient</span></td></tr>
+            <tr><td>🧴 Pure Ghee 250ml</td><td>2,480 units</td><td>0 outlets</td><td>210 units</td><td>11 days</td><td><span class="status-pill s-delivered">Sufficient</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="screen" id="page-customers">
+      <div class="stats-grid">
+        <div class="stat-card" data-icon="👥"><div class="stat-label">Total Customers</div><div class="stat-value">12,481</div><div class="stat-change change-up">↑ 84 new this week</div></div>
+        <div class="stat-card" data-icon="⭐"><div class="stat-label">Subscribers</div><div class="stat-value">3,842</div><div class="stat-change change-up">↑ 24 today</div></div>
+        <div class="stat-card" data-icon="💰"><div class="stat-label">Avg Order Value</div><div class="stat-value">₹376</div><div class="stat-change change-up">↑ ₹12 vs last month</div></div>
+        <div class="stat-card" data-icon="🔄"><div class="stat-label">Retention Rate</div><div class="stat-value">82%</div><div class="stat-change change-up">↑ 3% this month</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Top Customers</span><span class="card-action">Export →</span></div>
+        <table>
+          <thead><tr><th>Name</th><th>Phone</th><th>Area</th><th>Plan</th><th>Total Spent</th><th>Since</th></tr></thead>
+          <tbody>
+            <tr><td>Priya Sharma</td><td>+91 98200 XXXXX</td><td>Malad West</td><td><span class="status-pill s-delivered">Family Pack</span></td><td>₹18,420</td><td>Jan 2024</td></tr>
+            <tr><td>Rahul Mehta</td><td>+91 99200 XXXXX</td><td>Borivali East</td><td><span class="status-pill s-out">Daily Essentials</span></td><td>₹12,840</td><td>Mar 2024</td></tr>
+            <tr><td>Sunita Patel</td><td>+91 97200 XXXXX</td><td>Kandivali</td><td><span class="status-pill s-delivered">Family Pack</span></td><td>₹21,000</td><td>Dec 2023</td></tr>
+            <tr><td>Vikram Joshi</td><td>+91 96200 XXXXX</td><td>Andheri</td><td><span class="status-pill s-pending">Milk Only</span></td><td>₹4,788</td><td>Aug 2024</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="screen" id="page-revenue">
+      <div class="stats-grid">
+        <div class="stat-card" data-icon="💰"><div class="stat-label">This Month</div><div class="stat-value">₹14.2L</div><div class="stat-change change-up">↑ 12% vs last month</div></div>
+        <div class="stat-card" data-icon="📈"><div class="stat-label">This Year</div><div class="stat-value">₹1.42Cr</div><div class="stat-change change-up">↑ 28% YoY</div></div>
+        <div class="stat-card" data-icon="🏪"><div class="stat-label">Best Outlet</div><div class="stat-value">Andheri</div><div class="stat-change change-up">₹12,480 today</div></div>
+        <div class="stat-card" data-icon="⭐"><div class="stat-label">Sub Revenue</div><div class="stat-value">₹57.6L</div><div class="stat-change change-up">40% of total</div></div>
+      </div>
+    </div>
+
+    <div class="screen" id="page-delivery">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Delivery Staff Today</span><span class="card-action">+ Add Staff</span></div>
+        <table>
+          <thead><tr><th>Name</th><th>Outlet</th><th>Deliveries Done</th><th>Pending</th><th>Rating</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Suresh Kumar</td><td>Malad West</td><td>42 / 48</td><td>6</td><td>⭐ 4.9</td><td><span class="status-pill s-out">Active</span></td></tr>
+            <tr><td>Raju Yadav</td><td>Borivali East</td><td>38 / 40</td><td>2</td><td>⭐ 4.7</td><td><span class="status-pill s-out">Active</span></td></tr>
+            <tr><td>Manoj Singh</td><td>Kandivali</td><td>51 / 51</td><td>0</td><td>⭐ 5.0</td><td><span class="status-pill s-delivered">Done</span></td></tr>
+            <tr><td>Deepak Patil</td><td>Andheri West</td><td>28 / 62</td><td>34</td><td>⭐ 4.6</td><td><span class="status-pill s-out">Active</span></td></tr>
+            <tr><td>Anil Thakur</td><td>Goregaon</td><td>0 / 35</td><td>35</td><td>⭐ 4.8</td><td><span class="status-pill s-pending">Not Started</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="screen" id="page-settings">
+      <div class="card">
+        <div class="card-header"><span class="card-title">App Settings</span></div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);"><div><div style="font-size:0.88rem;font-weight:600;">Delivery Start Time</div><div style="font-size:0.75rem;color:var(--muted);">Morning slot for all outlets</div></div><div style="font-size:0.88rem;font-weight:700;color:var(--green);">6:30 AM</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);"><div><div style="font-size:0.88rem;font-weight:600;">Order Cutoff Time</div><div style="font-size:0.75rem;color:var(--muted);">Last time for next day order</div></div><div style="font-size:0.88rem;font-weight:700;color:var(--green);">10:00 PM</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);"><div><div style="font-size:0.88rem;font-weight:600;">Minimum Order Value</div><div style="font-size:0.75rem;color:var(--muted);">For free delivery</div></div><div style="font-size:0.88rem;font-weight:700;color:var(--green);">₹50</div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;"><div><div style="font-size:0.88rem;font-weight:600;">Subscriber Discount</div><div style="font-size:0.75rem;color:var(--muted);">Applied on all subscriptions</div></div><div style="font-size:0.88rem;font-weight:700;color:var(--green);">15%</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const titles = {dashboard:'Dashboard',orders:'Orders',outlets:'Outlets',inventory:'Inventory',customers:'Customers',revenue:'Revenue',delivery:'Delivery Staff',settings:'Settings'};
+  function showPage(id, el) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('page-'+id).classList.add('active');
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('page-title').textContent = titles[id];
+  }
+</script>
+</body>
+</html>
