@@ -21,10 +21,15 @@ body {
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   font-family: "Manrope", sans-serif;
+  font-size: 16px;
   color: var(--text);
   line-height: 1.5;
   overflow-x: hidden;
@@ -50,7 +55,7 @@ a {
 }
 
 .container {
-  width: min(1180px, 92vw);
+  width: min(1180px, calc(100vw - 28px));
   margin: 0 auto;
 }
 
@@ -121,6 +126,7 @@ h3 {
 .nav a {
   color: var(--muted);
   font-weight: 700;
+  font-size: 0.95rem;
   transition: color 0.2s ease;
 }
 
@@ -300,14 +306,16 @@ h1 span {
   border-bottom: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.03);
   overflow: hidden;
+  max-width: 100%;
 }
 
 .ticker-track {
-  width: max-content;
-  display: flex;
+  width: auto;
+  display: inline-flex;
   gap: 28px;
   padding: 14px 0;
   animation: scroll 26s linear infinite;
+  white-space: nowrap;
 }
 
 .ticker-track span {
@@ -678,6 +686,10 @@ h1 span {
 }
 
 @media (max-width: 760px) {
+  .container {
+    width: calc(100vw - 24px);
+  }
+
   .nav {
     display: none;
   }
@@ -689,6 +701,34 @@ h1 span {
 
   .hero {
     padding-top: 50px;
+  }
+
+  .hero-grid {
+    gap: 22px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 12vw, 2.9rem);
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-links {
+    font-size: 0.85rem;
+  }
+
+  .photo-stack {
+    padding: 10px;
+  }
+
+  .main-photo {
+    aspect-ratio: 4 / 4.9;
+  }
+
+  .float-photo {
+    width: 46%;
   }
 
   .ticker-track {
@@ -706,5 +746,122 @@ h1 span {
 
   .footer-wrap {
     flex-direction: column;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: min(1800px, 95vw);
+  }
+
+  .nav-wrap {
+    min-height: 90px;
+  }
+
+  .brand {
+    font-size: 2rem;
+  }
+
+  .nav {
+    gap: 30px;
+  }
+
+  .nav a {
+    font-size: 1.05rem;
+  }
+
+  .btn-mini {
+    padding: 13px 24px;
+    font-size: 1rem;
+  }
+
+  .hero {
+    padding: 102px 0 72px;
+    min-height: calc(92vh - 90px);
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 90px;
+  }
+
+  h1 {
+    font-size: clamp(4.6rem, 7.4vw, 8.8rem);
+    line-height: 0.95;
+    margin-bottom: 22px;
+  }
+
+  .lead {
+    font-size: 1.16rem;
+    max-width: 68ch;
+  }
+
+  .hero-proof {
+    gap: 14px;
+  }
+
+  .hero-proof div {
+    padding: 14px;
+  }
+
+  .hero-proof strong {
+    font-size: 1rem;
+  }
+
+  .hero-proof span {
+    font-size: 0.92rem;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    padding: 16px 30px;
+    font-size: 1.04rem;
+  }
+
+  .hero-links {
+    font-size: 1rem;
+  }
+
+  .photo-stack {
+    padding: 22px;
+    border-radius: 34px;
+  }
+
+  .main-photo {
+    aspect-ratio: 4 / 4.6;
+  }
+
+  .float-photo {
+    width: 40%;
+    right: -9%;
+    bottom: -8%;
+  }
+
+  .trust-grid article {
+    padding: 18px 20px;
+  }
+
+  .section {
+    padding: 96px 0;
+  }
+
+  .section-head h2 {
+    font-size: clamp(2.4rem, 3.2vw, 4rem);
+  }
+}
+
+@media (min-width: 1800px) {
+  .container {
+    width: min(2200px, 96vw);
+  }
+
+  h1 {
+    font-size: clamp(5.2rem, 7.8vw, 10rem);
+  }
+
+  .hero-grid {
+    gap: 110px;
   }
 }
