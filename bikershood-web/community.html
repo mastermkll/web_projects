@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bikershood | Rider Community</title>
+    <meta
+      name="description"
+      content="Join the bikershood rider community: gallery, events, and WhatsApp ride group access."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body data-page="community">
+    <div id="site-header"></div>
+
+    <main class="page-wrap">
+      <section class="section">
+        <div class="container">
+          <p class="eyebrow">Rider Network</p>
+          <h1 class="section-title">Community Built on Roads</h1>
+          <p class="section-subtitle">
+            Ride gallery, curated events, and regional groups where builds, routes, and stories come alive.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title" style="font-size:2rem">Ride Gallery</h2>
+            <a class="btn btn-outline" target="_blank" rel="noopener" href="https://wa.me/919999999999?text=Hi%20Bikershood%2C%20I%20want%20to%20submit%20my%20ride%20photo.">
+              Submit Your Ride
+            </a>
+          </div>
+          <div class="gallery-grid" id="communityGallery"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container split-layout">
+          <article class="story-card">
+            <p class="eyebrow">Events</p>
+            <h2 class="section-title" style="font-size:2rem">Upcoming Rides</h2>
+            <p class="section-subtitle">Register early. Slots close fast.</p>
+            <div class="events-grid" id="communityEvents"></div>
+          </article>
+
+          <article class="story-card">
+            <p class="eyebrow">Join Group</p>
+            <h2 class="section-title" style="font-size:2rem">Get in the WhatsApp Squad</h2>
+            <p class="section-subtitle">
+              Access route drops, event alerts, and fitment discounts from Bikershood team.
+            </p>
+            <div class="action-row" style="margin-top:1rem">
+              <a class="btn btn-whatsapp" target="_blank" rel="noopener" href="https://wa.me/919999999999?text=Hi%20Bikershood%2C%20please%20add%20me%20to%20the%20ride%20community%20group.">
+                Join WhatsApp Group
+              </a>
+              <a class="btn btn-outline" href="products.html">Shop Before Ride</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Community Social</p>
+              <h2 class="section-title">Instagram Feed</h2>
+            </div>
+          </div>
+          <div id="communityInstaFeed" class="instagram-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/community.js"></script>
+  </body>
+</html>

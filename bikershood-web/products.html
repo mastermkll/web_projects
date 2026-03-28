@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bikershood | Shop Motorcycle Accessories</title>
+    <meta
+      name="description"
+      content="Browse top selling and new motorcycle accessories with filters by bike model, brand, and price."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body data-page="products">
+    <div id="site-header"></div>
+
+    <main class="page-wrap">
+      <section class="section">
+        <div class="container">
+          <p class="eyebrow">Catalog</p>
+          <h1 class="section-title">Ride-Ready Accessories</h1>
+          <p class="section-subtitle">
+            Filter by bike model, brand, and budget. Compatible with Himalayan 411, KTM 390, Dominar 400, and more.
+          </p>
+
+          <div class="products-layout">
+            <aside class="filters-wrap">
+              <div class="filter-box">
+                <label for="quickSearch">Search</label>
+                <input id="quickSearch" class="input" type="search" placeholder="Search products" />
+              </div>
+
+              <div class="filter-box">
+                <label for="bikeFilter">Bike Model</label>
+                <select id="bikeFilter" class="select"></select>
+              </div>
+
+              <div class="filter-box">
+                <label for="brandFilter">Brand</label>
+                <select id="brandFilter" class="select"></select>
+              </div>
+
+              <div class="filter-box">
+                <label for="priceFilter">Price</label>
+                <input id="priceFilter" type="range" min="0" value="0" class="input" />
+                <div class="range-read">
+                  <span id="priceRead">Up to INR 0</span>
+                  <span>Live</span>
+                </div>
+              </div>
+
+              <div class="filter-box">
+                <label>Sort by Collection</label>
+                <div class="tag-row">
+                  <button type="button" class="tag active" data-tag-filter="all">All</button>
+                  <button type="button" class="tag" data-tag-filter="top">Top Selling</button>
+                  <button type="button" class="tag" data-tag-filter="new">New Arrivals</button>
+                </div>
+              </div>
+
+              <button id="clearFilters" class="btn btn-muted" type="button">Reset Filters</button>
+            </aside>
+
+            <section>
+              <div class="section-head">
+                <h2 class="section-title" style="font-size:2rem">Products</h2>
+                <span class="badge" id="resultsCount">0 Products</span>
+              </div>
+              <div class="products-grid" id="productsGrid"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/products.js"></script>
+  </body>
+</html>

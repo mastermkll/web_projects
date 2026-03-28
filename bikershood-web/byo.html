@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bikershood | Build Your Own Bike</title>
+    <meta
+      name="description"
+      content="Configure your bike setup: select model, add components, preview live, and add full build to cart."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body data-page="byo">
+    <div id="site-header"></div>
+
+    <main class="page-wrap">
+      <section class="section">
+        <div class="container">
+          <p class="eyebrow">BYO Tool</p>
+          <h1 class="section-title">Build Your Own Bike</h1>
+          <p class="section-subtitle">
+            Step 1: Select bike model. Step 2: Add components. Step 3: Preview live. Step 4: Check total and add to
+            cart.
+          </p>
+
+          <div class="stepper">
+            <span class="step-chip active" data-step-chip="1">1. Select Bike Model</span>
+            <span class="step-chip" data-step-chip="2">2. Add Components</span>
+            <span class="step-chip" data-step-chip="3">3. Live Preview</span>
+            <span class="step-chip" data-step-chip="4">4. Total & Add to Cart</span>
+          </div>
+
+          <div class="byo-grid">
+            <section class="panel">
+              <h2 class="section-title" style="font-size:2rem">Step 1: Bike Model</h2>
+              <div class="model-grid" id="modelGrid"></div>
+
+              <h3 class="section-title" style="font-size:1.8rem;margin-top:1rem">Step 2: Components</h3>
+              <div class="component-grid" id="componentGrid"></div>
+            </section>
+
+            <section class="panel">
+              <h2 class="section-title" style="font-size:2rem">Step 3: Live Preview</h2>
+              <div class="preview-wrap">
+                <svg id="bikePreview" viewBox="0 0 800 320" role="img" aria-label="Live bike preview">
+                  <defs>
+                    <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#2e2e32" />
+                      <stop offset="100%" stop-color="#17171a" />
+                    </linearGradient>
+                  </defs>
+
+                  <ellipse cx="220" cy="250" rx="105" ry="22" fill="rgba(0,0,0,.35)" />
+                  <ellipse cx="585" cy="250" rx="105" ry="22" fill="rgba(0,0,0,.35)" />
+
+                  <circle cx="220" cy="220" r="70" fill="#121214" stroke="#4d4d52" stroke-width="8" />
+                  <circle cx="220" cy="220" r="28" fill="#2a2a2f" />
+                  <circle cx="585" cy="220" r="70" fill="#121214" stroke="#4d4d52" stroke-width="8" />
+                  <circle cx="585" cy="220" r="28" fill="#2a2a2f" />
+
+                  <rect x="240" y="130" width="300" height="32" rx="16" fill="url(#bodyGrad)" />
+                  <path id="previewAccentBody" d="M290 132 L470 132 L500 164 L270 164 Z" fill="#ff4d00" />
+
+                  <rect x="300" y="108" width="98" height="22" rx="11" fill="#2c2c30" />
+                  <rect id="previewAccentTank" x="392" y="104" width="58" height="26" rx="13" fill="#ff4d00" />
+                  <rect id="previewAccentTail" x="470" y="116" width="46" height="14" rx="6" fill="#ff4d00" />
+
+                  <rect x="520" y="118" width="98" height="10" rx="5" fill="#323238" />
+                  <rect x="546" y="96" width="7" height="24" fill="#3b3b40" />
+
+                  <g id="layerHandlebar" class="hide">
+                    <rect x="535" y="88" width="122" height="7" rx="3" fill="#ff8a45" />
+                  </g>
+
+                  <g id="layerWindscreen" class="hide">
+                    <path d="M540 80 Q590 20 635 78" fill="none" stroke="#8f96aa" stroke-width="8" />
+                  </g>
+
+                  <g id="layerAuxLights" class="hide">
+                    <circle cx="615" cy="146" r="12" fill="#ffc36b" />
+                    <circle cx="645" cy="146" r="12" fill="#ffc36b" />
+                  </g>
+
+                  <g id="layerSaddleBag" class="hide">
+                    <rect x="408" y="158" width="60" height="44" rx="8" fill="#3a3430" />
+                  </g>
+
+                  <g id="layerCrashGuard" class="hide">
+                    <path d="M310 162 Q250 180 238 220" fill="none" stroke="#b4533b" stroke-width="8" />
+                  </g>
+                </svg>
+                <p class="preview-note">Preview model: <strong id="previewModelLabel">Himalayan 411</strong></p>
+              </div>
+
+              <h3 class="section-title" style="font-size:1.8rem;margin-top:1rem">Step 4: Total & Add to Cart</h3>
+              <div class="summary">
+                <div class="summary-row">
+                  <span>Selected bike model</span>
+                  <strong id="selectedModelName">Himalayan 411</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Build composition</span>
+                  <span id="summaryBuild">0 components</span>
+                </div>
+                <div id="selectedComponents" class="tag-row"></div>
+                <div class="summary-row">
+                  <span>Components subtotal</span>
+                  <strong id="summarySubtotal">INR 0</strong>
+                </div>
+                <div class="summary-row summary-total">
+                  <span>Total</span>
+                  <strong id="summaryTotal">INR 0</strong>
+                </div>
+
+                <div class="action-row">
+                  <button type="button" class="btn btn-primary" id="addByoCart">Add Build to Cart</button>
+                  <button type="button" class="btn btn-outline" id="clearBuild">Reset Build</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/byo.js"></script>
+  </body>
+</html>

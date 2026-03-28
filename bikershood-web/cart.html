@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bikershood | Cart & Checkout</title>
+    <meta
+      name="description"
+      content="Review cart, apply coupon, and checkout with Razorpay or Stripe for bikershood accessories."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body data-page="cart">
+    <div id="site-header"></div>
+
+    <main class="page-wrap">
+      <section class="section">
+        <div class="container cart-layout">
+          <section class="cart-card">
+            <div class="section-head">
+              <h1 class="section-title" style="font-size:2.3rem">Your Cart</h1>
+              <span class="badge">Secure Checkout</span>
+            </div>
+            <div id="cartList" class="cart-list"></div>
+            <p id="emptyCart" class="section-subtitle hide" style="margin-top:0.7rem">
+              Browse products or create a custom build to start.
+            </p>
+          </section>
+
+          <aside class="checkout-card">
+            <h2 class="section-title" style="font-size:2rem">Order Summary</h2>
+            <div class="order-lines">
+              <div class="order-line">
+                <span>Subtotal</span>
+                <strong id="subtotalValue">INR 0</strong>
+              </div>
+              <div class="order-line">
+                <span>Shipping</span>
+                <strong id="shippingValue">INR 0</strong>
+              </div>
+              <div class="order-line">
+                <span>Discount</span>
+                <strong id="discountValue">- INR 0</strong>
+              </div>
+              <div class="order-line total">
+                <span>Total</span>
+                <strong id="totalValue">INR 0</strong>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <input id="couponInput" class="input" type="text" placeholder="Coupon code (try HOOD10)" />
+              <button id="applyCoupon" class="btn btn-outline" type="button">Apply Coupon</button>
+            </div>
+
+            <div class="payment-grid">
+              <button id="payRazorpay" class="btn btn-primary payment-btn" type="button">Pay with Razorpay</button>
+              <button id="payStripe" class="btn btn-outline payment-btn" type="button">Pay with Stripe</button>
+              <a id="checkoutWhatsapp" class="btn btn-whatsapp payment-btn" target="_blank" rel="noopener"
+                >Place Order on WhatsApp</a
+              >
+            </div>
+
+            <p class="notice">
+              Demo integration is wired for Razorpay and Stripe. Add your keys/payment link in
+              <code>js/payment-config.js</code>.
+            </p>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="js/payment-config.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/cart.js"></script>
+  </body>
+</html>
