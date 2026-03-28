@@ -1,0 +1,67 @@
+ABHISHEK CHAVHARE
+Pune Division, Maharashtra, India | +91 82088 07386 | abhishekchavhare11@email.com
+GitHub: https://github.com/abhishekchavhare | LinkedIn: https://www.linkedin.com/in/abhishek-chavhare-279b68220/
+
+PROFESSIONAL SUMMARY
+Associate Software Engineer at Affinity Global Inc. (Nucleuslinks) with hands-on experience in backend engineering, API development, and automation-focused product work. Strong foundation in Go, JavaScript, PHP, SQL systems, and microservices concepts, with practical exposure to AI Agents and Agentic Automation. MCA graduate from VJTI, Mumbai.
+
+CORE SKILLS
+Programming: Go, JavaScript, PHP, Core Java, C#
+Backend and APIs: REST APIs, Microservices, Service Integration
+Databases: MySQL, ClickHouse, Microsoft SQL Server
+Frameworks and Platforms: .NET Framework
+Automation and AI: AI Agents, Agentic Automation
+Engineering Practices: Debugging, code maintenance, production support, Git collaboration
+
+EXPERIENCE
+Affinity Global Inc. (Nucleuslinks) | Mumbai, Maharashtra, India
+Associate Software Engineer | Full-time | Jan 2026 - Present
+- Promoted from Junior Software Engineer to Associate Software Engineer.
+- Contribute to application development and maintenance using Go, JavaScript, and PHP.
+- Build and support backend services and API integrations for business workflows.
+- Work on automation-oriented features including AI Agent and agentic automation use cases.
+
+Junior Software Engineer | Aug 2023 - Jan 2026
+- Delivered development and support work across backend modules and internal product flows.
+- Worked with MySQL and ClickHouse for data handling, reporting, and performance-conscious queries.
+- Collaborated with team members to implement, test, and deploy product updates.
+
+Pi Techniques Pvt. Ltd. | Mumbai, Maharashtra, India
+Software Engineer Intern | Jan 2023 - Jul 2023
+- Built and supported features using .NET Framework and C#.
+- Worked on REST APIs and microservices-based components.
+- Used Microsoft SQL Server for data operations and integration tasks.
+
+PROJECTS
+1) Chaos Cake Shop Website
+Tech: HTML, CSS, JavaScript
+- Built a realistic, image-rich bakery website with professional visual hierarchy.
+- Developed multi-section pages including home, menu, gallery, story, and contact.
+
+2) Mumbai Fresh Dairy Platform (Customer + Admin)
+Tech: Product workflow design, dashboard architecture
+- Designed customer and admin application flows for delivery and operations use cases.
+
+3) Luxury Fashion Boutique + AI Features
+Tech: HTML, CSS, JavaScript, AI workflow integration
+- Implemented AI-assisted user interaction features and content support tools.
+
+4) Fitness and Gym Website
+Tech: HTML, CSS, JavaScript
+- Built a conversion-focused business website with modern responsive UI.
+
+EDUCATION
+Veermata Jijabai Technological Institute (VJTI), Mumbai
+Master of Computer Applications (MCA), Computer Science | 2021 - 2023
+
+Savitribai Phule Pune University
+BSc (Computer Science) | 2017 - 2020
+
+TEST SCORE
+MHT-CET MCA | Score: 98.28% | AIR Rank: 256 | Sep 2021
+
+LINKEDIN HIGHLIGHTS
+- 500+ connections
+- 622 followers
+- Promoted to Associate Software Engineer in Jan 2026
+
